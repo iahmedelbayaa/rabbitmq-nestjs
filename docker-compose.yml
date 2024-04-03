@@ -1,6 +1,6 @@
 services:
   orders:
-    build: 
+    build:
       context: .
       dockerfile: ./apps/orders/Dockerfile
       target: development
@@ -12,13 +12,12 @@ services:
       - mongodb-secondary
       - mongodb-arbiter
     volumes:
-      - .:/user/src/app
-      - ./usr/src/app/node_modules
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - '3000:3000'
-
   mongodb-primary:
-    image: docker.io/bitnami/mongodb:7.0
+    image: docker.io/bitnami/mongodb:5.0
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
       - MONGODB_REPLICA_SET_MODE=primary
@@ -30,7 +29,7 @@ services:
       - '27017:27017'
 
   mongodb-secondary:
-    image: docker.io/bitnami/mongodb:7.0
+    image: docker.io/bitnami/mongodb:5.0
     depends_on:
       - mongodb-primary
     environment:
@@ -41,7 +40,7 @@ services:
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
 
   mongodb-arbiter:
-    image: docker.io/bitnami/mongodb:7.0
+    image: docker.io/bitnami/mongodb:5.0
     depends_on:
       - mongodb-primary
     environment:
